@@ -126,7 +126,6 @@ class Animator:
                 f'Re = {params["reynolds"]:.0f}  |  '
                 f'Ri = {params["richardson"]:.3f}  |  '
                 f'$\\Delta t$ = {params["dt"]:.3f} s  |  '
-                f'$\\nu$ = {params["nu"]:.3f} m²/s'
             )
             ax2.text(0.5, -0.15, param_text, transform=ax2.transAxes,
                     ha='center', va='top', fontsize=11,

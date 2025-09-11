@@ -5,7 +5,7 @@ Kelvin-Helmholtz 2D Instability Solver (Optimized)
 A high-performance solver for 2D Kelvin-Helmholtz instability with Numba acceleration.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __author__ = "Sandy H. S. Herho, Faiz R. Fajary, Iwan P. Anwar, Faruq Khadami, Gandhi Napitupulu, Nurjanna J. Trilaksono"
 __email__ = "sandy.herho@email.ucr.edu"
 __license__ = "WTFPL"
