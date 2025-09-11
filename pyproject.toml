@@ -4,11 +4,11 @@ version = "0.1.0"
 description = "A high-performance solver for 2D Kelvin-Helmholtz instability with Numba acceleration"
 authors = [
     "Sandy H. S. Herho <sandy.herho@email.ucr.edu>",
-    "Faiz R. Fajary",
-    "Iwan P. Anwar",
-    "Faruq Khadami",
-    "Gandhi Napitupulu",
-    "Nurjanna J. Trilaksono"
+    "Faiz R. Fajary <faizrohman@itb.ac.id>",
+    "Iwan P. Anwar <iwanpanwar@itb.ac.id>",
+    "Faruq Khadami <fkhadami@itb.ac.id>",
+    "Gandhi Napitupulu <gandhinapitupulu88@gmail.com>",
+    "Nurjanna J. Trilaksono <jpatiani@itb.ac.id>"
 ]
 license = "WTFPL"
 readme = "README.md"
