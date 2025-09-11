@@ -1,4 +1,9 @@
-"""Animation Creation - Professional Version"""
+"""Animation Creation - Professional Version
+
+Visualizes the Kelvin-Helmholtz instability in the x-z plane where:
+- x: horizontal (streamwise) direction
+- z: vertical direction with z=0 at BOTTOM (surface), positive UPWARD
+"""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,13 +19,23 @@ plt.rcParams['mathtext.fontset'] = 'stix'
 
 
 class Animator:
-    """Create professional animations for KH2D solutions."""
+    """Create professional animations for KH2D solutions.
+    
+    Generates animations showing vorticity and density evolution in the x-z plane.
+    The z-axis represents height with z=0 at the bottom (surface).
+    """
     
     @staticmethod
     def create_gif(result: Dict[str, Any], filename: str, 
                   output_dir: str = "outputs", title: str = "KH Instability",
                   fps: int = 20, dpi: int = 100) -> None:
-        """Create animated GIF of the simulation with professional layout."""
+        """Create animated GIF of the simulation with professional layout.
+        
+        The animation shows:
+        - Top panel: Vorticity (out-of-plane component)
+        - Bottom panel: Density stratification
+        Both in the x-z plane with z=0 at bottom.
+        """
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
         filepath = output_path / filename
@@ -61,7 +76,7 @@ class Animator:
         
         # Create colorbars once
         cbar1 = plt.colorbar(im1, ax=ax1, pad=0.02, fraction=0.05)
-        cbar1.set_label(r'$\omega_z$ [s$^{-1}$]', fontsize=12, rotation=270, labelpad=20)
+        cbar1.set_label(r'$\omega_y$ [s$^{-1}$]', fontsize=12, rotation=270, labelpad=20)
         cbar1.ax.tick_params(labelsize=10)
         
         # Set symmetric ticks for vorticity colorbar
@@ -88,14 +103,20 @@ class Animator:
             ax1.clear()
             ax2.clear()
             
-            # Vorticity plot with corrected notation
+            # Vorticity plot (out-of-plane component for flow in x-z plane)
             ax1.contourf(x, z, vort[frame], levels=levels_vort, 
                         cmap='RdBu_r', extend='both')
-            ax1.set_ylabel(r'$z$ [m]', fontsize=14)
-            ax1.set_title(r'Vorticity (z-component): $\omega_z = \partial w/\partial x - \partial u/\partial z$' + 
+            ax1.set_ylabel(r'$z$ [m] (height)', fontsize=14)
+            ax1.set_title(r'Vorticity (out-of-plane): $\omega_y = \partial w/\partial x - \partial u/\partial z$' + 
                          f' (t = {t[frame]:.3f} s)', fontsize=14)
             ax1.set_aspect('equal')
             ax1.grid(True, alpha=0.3)
+            
+            # Add text to clarify coordinate system
+            ax1.text(0.02, 0.02, 'z=0 (bottom)', transform=ax1.transAxes, 
+                    fontsize=9, alpha=0.6, verticalalignment='bottom')
+            ax1.text(0.02, 0.98, f'z={z[-1]:.1f} (top)', transform=ax1.transAxes, 
+                    fontsize=9, alpha=0.6, verticalalignment='top')
             
             # Add contour lines for clarity
             ax1.contour(x, z, vort[frame], levels=10, colors='black', 
@@ -104,12 +125,18 @@ class Animator:
             # Density plot
             ax2.contourf(x, z, rho[frame], levels=levels_rho, 
                         cmap='viridis', extend='both')
-            ax2.set_xlabel(r'$x$ [m]', fontsize=14)
-            ax2.set_ylabel(r'$z$ [m]', fontsize=14)
+            ax2.set_xlabel(r'$x$ [m] (horizontal)', fontsize=14)
+            ax2.set_ylabel(r'$z$ [m] (height)', fontsize=14)
             ax2.set_title(r'Density: $\rho$' + f' (t = {t[frame]:.3f} s)',
                          fontsize=14)
             ax2.set_aspect('equal')
             ax2.grid(True, alpha=0.3)
+            
+            # Add text to clarify stratification
+            ax2.text(0.02, 0.02, 'z=0 (bottom)', transform=ax2.transAxes, 
+                    fontsize=9, alpha=0.6, verticalalignment='bottom')
+            ax2.text(0.02, 0.98, f'z={z[-1]:.1f} (top)', transform=ax2.transAxes, 
+                    fontsize=9, alpha=0.6, verticalalignment='top')
             
             # Add contour lines
             ax2.contour(x, z, rho[frame], levels=10, colors='white', 
@@ -131,6 +158,10 @@ class Animator:
             ax2.text(0.5, -0.15, param_text, transform=ax2.transAxes,
                     ha='center', va='top', fontsize=11,
                     bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.3))
+            
+            # Add note about coordinate system
+            fig.text(0.5, 0.01, 'Coordinate System: z=0 at bottom (surface), positive upward', 
+                    ha='center', fontsize=10, style='italic', alpha=0.7)
             
             return []
         

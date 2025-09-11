@@ -4,6 +4,7 @@
 [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Numba](https://img.shields.io/badge/accelerated-numba-orange.svg)](https://numba.pydata.org/)
+[![PyPI version](https://badge.fury.io/py/kh2d-solver.svg)](https://badge.fury.io/py/kh2d-solver)
 
 A high-performance solver for 2D Kelvin-Helmholtz instability for incompressible flows using finite difference methods with Numba acceleration.
 
@@ -18,31 +19,43 @@ A high-performance solver for 2D Kelvin-Helmholtz instability for incompressible
 - Animated GIF generation
 - Conservation monitoring (mass, momentum, energy)
 
+## Coordinate System
+
+The solver uses a 2D coordinate system where:
+- **x-axis**: Horizontal direction (streamwise)
+- **z-axis**: Vertical direction with **z=0 at the bottom** (surface) and **positive upward**
+- Domain: x ∈ [0, Lx], z ∈ [0, Lz]
+
 ## Installation
 
-### Prerequisites
+### Install from PyPI (Recommended)
 
-Install Poetry if you haven't already:
 ```bash
-curl -sSL https://install.python-poetry.org | python3 -
+pip install kh2d-solver
 ```
 
-### Install the Package
+### Install from Source
 
 ```bash
 git clone https://github.com/sandyherho/kelvin-helmholtz-2d-solver.git
 cd kelvin-helmholtz-2d-solver
-poetry install
+pip install .
+```
+
+### Development Installation
+
+For development with editable installation:
+```bash
+git clone https://github.com/sandyherho/kelvin-helmholtz-2d-solver.git
+cd kelvin-helmholtz-2d-solver
+pip install -e .
 ```
 
 ## Quick Start
 
-Activate the poetry environment and run simulations:
+Run simulations directly after installation:
 
 ```bash
-# Activate poetry shell
-poetry shell
-
 # Run a basic shear layer simulation
 kh2d-simulate basic_shear
 
@@ -54,13 +67,6 @@ kh2d-simulate --all
 
 # Use a custom configuration
 kh2d-simulate --config my_config.txt
-```
-
-Or run without activating the shell:
-
-```bash
-# Run directly with poetry
-poetry run kh2d-simulate basic_shear
 ```
 
 ## Performance Options
@@ -111,15 +117,17 @@ The solver generates:
 
 ## Physics
 
-The solver solves the 2D incompressible Navier-Stokes equations with density stratification:
+The solver solves the 2D incompressible Navier-Stokes equations with density stratification in the x-z plane (z=0 at bottom, positive upward):
 
 - Continuity: ∇·**u** = 0
-- Momentum: ∂**u**/∂t + (**u**·∇)**u** = -(1/ρ₀)∇p + ν∇²**u** - (ρ/ρ₀)g**k**
+- Momentum: ∂**u**/∂t + (**u**·∇)**u** = -(1/ρ₀)∇p + ν∇²**u** - (ρ/ρ₀)g**ẑ**
 - Density: ∂ρ/∂t + **u**·∇ρ = κ∇²ρ
 
-The vorticity shown is the z-component: $ω_z$ = ∂w/∂x - ∂u/∂z
+where **u** = (u, w) is the velocity field in (x, z) coordinates and **ẑ** is the unit vector pointing upward.
 
+The vorticity shown is the y-component (out-of-plane): ω_y = ∂w/∂x - ∂u/∂z
 
+#
 ## Authors
 
 - Sandy H. S. Herho (sandy.herho@email.ucr.edu)

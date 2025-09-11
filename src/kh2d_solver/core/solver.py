@@ -1,4 +1,10 @@
-"""2D Kelvin-Helmholtz Instability Solver - Numba Optimized"""
+"""2D Kelvin-Helmholtz Instability Solver - Numba Optimized
+
+Coordinate System:
+- x-axis: Horizontal (streamwise) direction
+- z-axis: Vertical direction with z=0 at BOTTOM (surface), positive UPWARD
+- Domain: x ∈ [0, Lx], z ∈ [0, Lz]
+"""
 
 import numpy as np
 from scipy.sparse import diags
@@ -13,7 +19,15 @@ import os
 # Numba-optimized functions
 @jit(nopython=True, parallel=True, cache=True)
 def advect_upwind(q, u, w, dx, dz, dt):
-    """Numba-optimized upwind advection."""
+    """Numba-optimized upwind advection.
+    
+    Args:
+        q: Scalar field to advect
+        u: x-velocity (horizontal)
+        w: z-velocity (vertical, positive upward)
+        dx, dz: Grid spacing
+        dt: Time step
+    """
     nz, nx = q.shape
     qn = np.zeros_like(q)
     
@@ -33,8 +47,8 @@ def advect_upwind(q, u, w, dx, dz, dt):
             qn[i, j] = q[i, j] - dt * (u[i, j] * dudx + w[i, j] * dwdz)
     
     # Boundary conditions
-    qn[0, :] = q[0, :]
-    qn[-1, :] = q[-1, :]
+    qn[0, :] = q[0, :]  # Bottom boundary (z=0)
+    qn[-1, :] = q[-1, :]  # Top boundary (z=Lz)
     qn[:, 0] = q[:, 0]
     qn[:, -1] = q[:, -1]
     
@@ -56,8 +70,8 @@ def diffuse_explicit(q, nu, dx, dz, dt):
                 beta * (q[i+1, j] - 2*q[i, j] + q[i-1, j])
     
     # Boundary conditions
-    qn[0, :] = q[0, :]
-    qn[-1, :] = q[-1, :]
+    qn[0, :] = q[0, :]  # Bottom boundary (z=0)
+    qn[-1, :] = q[-1, :]  # Top boundary (z=Lz)
     qn[:, 0] = q[:, 0]
     qn[:, -1] = q[:, -1]
     
@@ -66,7 +80,9 @@ def diffuse_explicit(q, nu, dx, dz, dt):
 
 @jit(nopython=True, parallel=True, cache=True)
 def compute_divergence(u, w, dx, dz):
-    """Numba-optimized divergence computation."""
+    """Numba-optimized divergence computation.
+    div = ∂u/∂x + ∂w/∂z
+    """
     nz, nx = u.shape
     div = np.zeros((nz, nx))
     
@@ -81,7 +97,11 @@ def compute_divergence(u, w, dx, dz):
 @jit(nopython=True, parallel=True, cache=True)
 def compute_vorticity_z(u, w, dx, dz):
     """Numba-optimized z-component vorticity computation.
-    ω_z = ∂w/∂x - ∂u/∂z
+    For 2D flow in x-z plane, vorticity points in y-direction (out of plane):
+    ω_y = ∂w/∂x - ∂u/∂z
+    
+    Note: Often called ω_z in 2D literature, but technically it's the y-component
+    for flow in the x-z plane.
     """
     nz, nx = u.shape
     vort = np.zeros((nz, nx))
@@ -111,19 +131,36 @@ def apply_pressure_gradient(u, w, p, dx, dz, dt):
 
 @jit(nopython=True, parallel=True, cache=True)
 def apply_buoyancy(w, rho, g_richardson, dt):
-    """Numba-optimized buoyancy force."""
+    """Numba-optimized buoyancy force.
+    
+    Applies buoyancy in the vertical (z) direction.
+    Gravity acts downward (negative z), buoyancy acts upward for lighter fluid.
+    
+    Args:
+        w: Vertical velocity (positive upward)
+        rho: Density field
+        g_richardson: g * Richardson number
+        dt: Time step
+    """
     nz, nx = w.shape
     w_new = w.copy()
     
     for i in prange(1, nz-1):
         for j in range(1, nx-1):
+            # Buoyancy force: lighter fluid (rho < 1) experiences upward force
             w_new[i, j] = w[i, j] - dt * g_richardson * (rho[i, j] - 1.0)
     
     return w_new
 
 
 class KH2DSolver:
-    """Solver for 2D Kelvin-Helmholtz instability - Numba Optimized."""
+    """Solver for 2D Kelvin-Helmholtz instability - Numba Optimized.
+    
+    Solves the incompressible Navier-Stokes equations in the x-z plane where:
+    - x: horizontal (streamwise) direction
+    - z: vertical direction with z=0 at BOTTOM (surface), positive UPWARD
+    - Gravity acts in negative z direction
+    """
     
     def __init__(
         self,
@@ -135,7 +172,17 @@ class KH2DSolver:
         logger: Optional[Any] = None,
         n_cores: Optional[int] = None
     ):
-        """Initialize the 2D KH solver with Numba optimization."""
+        """Initialize the 2D KH solver with Numba optimization.
+        
+        Args:
+            nx: Number of grid points in x (horizontal)
+            nz: Number of grid points in z (vertical, z=0 at bottom)
+            lx: Domain length in x
+            lz: Domain height in z (from bottom z=0 to top z=lz)
+            verbose: Print progress information
+            logger: Optional logger instance
+            n_cores: Number of CPU cores to use (None = all available)
+        """
         self.nx = nx
         self.nz = nz
         self.lx = lx
@@ -150,12 +197,14 @@ class KH2DSolver:
             n_cores = os.cpu_count()
         numba.set_num_threads(n_cores)
         
+        # Create grid (z=0 at bottom, z=lz at top)
         self.x = np.linspace(0, lx, nx)
-        self.z = np.linspace(0, lz, nz)
+        self.z = np.linspace(0, lz, nz)  # z=0 is bottom, positive upward
         self.X, self.Z = np.meshgrid(self.x, self.z)
         
         if verbose:
             print(f"  Solver initialized: {nx}x{nz} grid")
+            print(f"  Domain: x ∈ [0, {lx}], z ∈ [0, {lz}] (z=0 at bottom)")
             print(f"  Using {n_cores} CPU cores for parallel computation")
     
     def _pressure_solve_fft(self, div):
@@ -195,7 +244,22 @@ class KH2DSolver:
         richardson: float = 0.25,
         show_progress: bool = True
     ) -> Dict[str, Any]:
-        """Solve the 2D Kelvin-Helmholtz instability problem - Numba Optimized."""
+        """Solve the 2D Kelvin-Helmholtz instability problem.
+        
+        Args:
+            u0: Initial horizontal velocity (x-direction)
+            w0: Initial vertical velocity (z-direction, positive upward)
+            rho0: Initial density field
+            t_final: Final simulation time
+            dt: Time step (None for automatic)
+            n_snapshots: Number of snapshots to save
+            reynolds: Reynolds number
+            richardson: Richardson number (stratification parameter)
+            show_progress: Show progress bar
+            
+        Returns:
+            Dictionary with results including coordinates, time, fields, and vorticity
+        """
         # Make contiguous arrays for Numba
         u = np.ascontiguousarray(u0.copy())
         w = np.ascontiguousarray(w0.copy())
@@ -203,7 +267,7 @@ class KH2DSolver:
         
         nu = 1.0 / reynolds
         kappa = nu
-        g_richardson = 9.81 * richardson
+        g_richardson = 9.81 * richardson  # Gravity acts downward (negative z)
         
         # Timestep calculation
         if dt is None:
@@ -271,7 +335,7 @@ class KH2DSolver:
                         beta * (rho_old[2:, 1:-1] + rho_old[:-2, 1:-1])) / \
                         (1 + 2*alpha + 2*beta)
             
-            # Buoyancy (Numba optimized)
+            # Buoyancy (acts in vertical direction)
             w = apply_buoyancy(w, rho, g_richardson, dt)
             
             # Pressure correction
@@ -282,8 +346,8 @@ class KH2DSolver:
             u, w = apply_pressure_gradient(u, w, p, self.dx, self.dz, dt)
             
             # Boundary conditions
-            u[0, :] = u[-1, :] = 0
-            w[0, :] = w[-1, :] = 0
+            u[0, :] = u[-1, :] = 0  # No-slip at bottom (z=0) and top (z=lz)
+            w[0, :] = w[-1, :] = 0  # No penetration at bottom and top
             u[:, 0] = u[:, -1]  # Periodic in x
             w[:, 0] = w[:, -1]
             rho[:, 0] = rho[:, -1]
