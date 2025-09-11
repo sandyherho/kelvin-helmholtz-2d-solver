@@ -207,8 +207,8 @@ If you use this software in your research, please cite:
 ```bibtex
 @software{kh2d_solver_2025,
   title = {{K}elvin-{H}elmholtz {2D} {I}nstability {S}olver},
-  author = {Herho, Sandy H. S. and Fajary, Faiz R. and Anwar, Iwan P. and 
-           Khadami, Faruq and Napitupulu, Gandhi and Trilaksono, Nurjanna J.},
+  author = {Herho, Sandy H. S. and Trilaksono, Nurjanna J. and Fajary, 
+  	   Faiz R. and Napitupulu, Gandhi and Anwar, Iwan P. and Khadami, Faruq},
   year = {2025},
   version = {0.1.2},
   url = {https://github.com/sandyherho/kelvin-helmholtz-2d-solver}
