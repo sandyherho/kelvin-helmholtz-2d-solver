@@ -1,0 +1,23 @@
+# Forced Turbulence
+scenario_name = Forced KH Turbulence
+nx = 384
+nz = 192
+lx = 2.0
+lz = 1.0
+t_final = 30.0
+n_snapshots = 300
+initial_condition = forced
+shear_thickness = 0.05
+u_top = 1.0
+u_bot = -1.0
+rho_top = 1.0
+rho_bot = 1.1
+n_forcing_modes = 5
+forcing_amplitude = 0.1
+noise_amplitude = 0.01
+reynolds = 5000
+richardson = 0.15
+save_netcdf = true
+save_animation = true
+fps = 40
+dpi = 120

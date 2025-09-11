@@ -1,0 +1,59 @@
+[tool.poetry]
+name = "kh2d-solver"
+version = "0.1.0"
+description = "A high-performance solver for 2D Kelvin-Helmholtz instability with Numba acceleration"
+authors = [
+    "Sandy H. S. Herho <sandy.herho@email.ucr.edu>",
+    "Faiz R. Fajary",
+    "Iwan P. Anwar",
+    "Faruq Khadami",
+    "Gandhi Napitupulu",
+    "Nurjanna J. Trilaksono"
+]
+license = "WTFPL"
+readme = "README.md"
+homepage = "https://github.com/sandyherho/kelvin-helmholtz-2d-solver"
+repository = "https://github.com/sandyherho/kelvin-helmholtz-2d-solver"
+keywords = ["fluid-dynamics", "kelvin-helmholtz", "instability", "CFD", "numerical-simulation", "numba"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Physics",
+]
+packages = [{include = "kh2d_solver", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+netCDF4 = "*"
+tqdm = "*"
+numba = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+black = "*"
+flake8 = "*"
+ipython = "*"
+
+[tool.poetry.scripts]
+kh2d-simulate = "kh2d_solver.cli:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+target-version = ['py38']
+
+[tool.isort]
+profile = "black"
+line_length = 100

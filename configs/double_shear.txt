@@ -1,0 +1,19 @@
+# Double Shear Layer
+scenario_name = Double Shear Layer
+nx = 256
+nz = 128
+lx = 2.0
+lz = 1.0
+t_final = 15.0
+n_snapshots = 150
+initial_condition = double_shear
+shear_thickness = 0.04
+separation = 0.3
+u_max = 1.0
+noise_amplitude = 0.01
+reynolds = 2000
+richardson = 0.1
+save_netcdf = true
+save_animation = true
+fps = 20
+dpi = 100

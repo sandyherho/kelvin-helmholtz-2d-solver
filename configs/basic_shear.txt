@@ -1,0 +1,21 @@
+# Basic Kelvin-Helmholtz Shear Layer
+scenario_name = Basic Shear Layer
+nx = 256
+nz = 128
+lx = 2.0
+lz = 1.0
+t_final = 10.0
+n_snapshots = 100
+initial_condition = shear_layer
+shear_thickness = 0.05
+u_top = 1.0
+u_bot = -1.0
+rho_top = 1.0
+rho_bot = 1.2
+noise_amplitude = 0.01
+reynolds = 1000
+richardson = 0.25
+save_netcdf = true
+save_animation = true
+fps = 20
+dpi = 100
