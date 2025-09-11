@@ -5,6 +5,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Numba](https://img.shields.io/badge/accelerated-numba-orange.svg)](https://numba.pydata.org/)
 [![PyPI version](https://badge.fury.io/py/kh2d-solver.svg)](https://badge.fury.io/py/kh2d-solver)
+[![DOI](https://zenodo.org/badge/1054548299.svg)](https://doi.org/10.5281/zenodo.17096830)
 
 A high-performance solver for 2D Kelvin-Helmholtz instability for incompressible flows using finite difference methods with Numba acceleration.
 
