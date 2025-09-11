@@ -20,8 +20,8 @@ from .utils.timer import Timer
 def print_header():
     """Print professional header with credits."""
     print("\n" + "="*70)
-    print(" "*15 + "KELVIN-HELMHOLTZ 2D INSTABILITY SOLVER (OPTIMIZED)")
-    print(" "*25 + "Version 0.1.0")
+    print(" "*15 + "KELVIN-HELMHOLTZ 2D INSTABILITY SOLVER")
+    print(" "*25 + "Version 0.1.1")
     print("="*70)
     print("\nAuthors:")
     print("  • Sandy H. S. Herho (sandy.herho@email.ucr.edu)")

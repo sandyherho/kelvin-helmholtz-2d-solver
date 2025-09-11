@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kh2d-solver"
-version = "0.1.0"
+version = "0.1.1"
 description = "A high-performance solver for 2D Kelvin-Helmholtz instability with Numba acceleration"
 authors = [
     "Sandy H. S. Herho <sandy.herho@email.ucr.edu>",

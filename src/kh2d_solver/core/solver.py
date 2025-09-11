@@ -1,4 +1,4 @@
-"""2D Kelvin-Helmholtz Instability Solver - Numba Optimized"""
+"""2D Kelvin-Helmholtz Instability Solver """
 
 import numpy as np
 from scipy.sparse import diags

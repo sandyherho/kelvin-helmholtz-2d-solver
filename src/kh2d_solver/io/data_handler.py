@@ -41,9 +41,9 @@ class DataHandler:
             nc_rho[:] = np.round(result['rho'], 3)
             nc_vort[:] = np.round(result['vorticity'], 3)
             
-            nc.description = "2D Kelvin-Helmholtz Instability Simulation (Numba Optimized)"
+            nc.description = "2D Kelvin-Helmholtz Instability Simulation"
             nc.created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            nc.software = "kh2d_solver v0.1.0"
+            nc.software = "kh2d_solver v0.1.1"
             nc.authors = "Sandy H. S. Herho, Faiz R. Fajary, Iwan P. Anwar, Faruq Khadami, Gandhi Napitupulu, Nurjanna J. Trilaksono"
             nc.license = "WTFPL"
             
