@@ -19,13 +19,6 @@ A high-performance solver for 2D Kelvin-Helmholtz instability for incompressible
 - Animated GIF generation
 - Conservation monitoring (mass, momentum, energy)
 
-## Coordinate System
-
-The solver uses a 2D coordinate system where:
-- **x-axis**: Horizontal direction (streamwise)
-- **z-axis**: Vertical direction with **z=0 at the bottom** (surface) and **positive upward**
-- Domain: x ∈ [0, Lx], z ∈ [0, Lz]
-
 ## Installation
 
 ### Install from PyPI (Recommended)
@@ -69,6 +62,32 @@ kh2d-simulate --all
 kh2d-simulate --config my_config.txt
 ```
 
+### Python API Usage
+
+```python
+import numpy as np
+from kh2d_solver import KH2DSolver, ShearLayer
+
+# Create solver
+solver = KH2DSolver(nx=256, nz=128, lx=2.0, lz=1.0)
+
+# Set initial conditions
+ic = ShearLayer(shear_thickness=0.05, u_top=1.0, u_bot=-1.0)
+u0, w0, rho0 = ic(solver.x, solver.z)
+
+# Run simulation
+result = solver.solve(
+    u0=u0, w0=w0, rho0=rho0,
+    t_final=10.0,
+    reynolds=1000,
+    richardson=0.25
+)
+
+# Access results
+vorticity = result['vorticity']
+density = result['rho']
+```
+
 ## Performance Options
 
 The solver automatically uses Numba JIT compilation for critical loops. You can control parallelization:
@@ -86,7 +105,7 @@ kh2d-simulate basic_shear --cores 1
 
 ## Configuration
 
-Configuration files are simple text files with key-value pairs, located in the `configs/` directory:
+Configuration files are simple text files with key-value pairs:
 
 ```text
 # Example configuration
@@ -117,17 +136,55 @@ The solver generates:
 
 ## Physics
 
-The solver solves the 2D incompressible Navier-Stokes equations with density stratification in the x-z plane (z=0 at bottom, positive upward):
+The solver solves the 2D incompressible Navier-Stokes equations with density stratification:
 
 - Continuity: ∇·**u** = 0
-- Momentum: ∂**u**/∂t + (**u**·∇)**u** = -(1/ρ₀)∇p + ν∇²**u** - (ρ/ρ₀)g**ẑ**
+- Momentum: ∂**u**/∂t + (**u**·∇)**u** = -(1/ρ₀)∇p + ν∇²**u** - (ρ/ρ₀)g**k**
 - Density: ∂ρ/∂t + **u**·∇ρ = κ∇²ρ
 
-where **u** = (u, w) is the velocity field in (x, z) coordinates and **ẑ** is the unit vector pointing upward.
+The vorticity shown is the z-component: ω_z = ∂w/∂x - ∂u/∂z
 
-The vorticity shown is the y-component (out-of-plane): ω_y = ∂w/∂x - ∂u/∂z
+## Publishing to PyPI (For Maintainers)
 
-#
+### First-time Setup
+
+1. **Create PyPI Account**: Register at [pypi.org](https://pypi.org)
+2. **Get API Token**: Account Settings → API tokens → Create token
+3. **Configure Poetry**:
+```bash
+poetry config pypi-token.pypi pypi-XXXXXXXX
+```
+
+### Publishing Process
+
+```bash
+# Update version in pyproject.toml
+poetry version patch  # or minor/major
+
+# Build the package
+poetry build
+
+# Publish to PyPI
+poetry publish
+```
+
+### Version Management
+
+Follow semantic versioning (MAJOR.MINOR.PATCH):
+- MAJOR: Breaking changes
+- MINOR: New features (backwards compatible)
+- PATCH: Bug fixes
+
+## Requirements
+
+- Python 3.8+
+- NumPy
+- SciPy
+- Matplotlib
+- netCDF4
+- tqdm
+- Numba
+
 ## Authors
 
 - Sandy H. S. Herho (sandy.herho@email.ucr.edu)
@@ -156,3 +213,11 @@ If you use this software in your research, please cite:
   url = {https://github.com/sandyherho/kelvin-helmholtz-2d-solver}
 }
 ```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues, questions, or suggestions, please open an issue on [GitHub](https://github.com/sandyherho/kelvin-helmholtz-2d-solver/issues).
