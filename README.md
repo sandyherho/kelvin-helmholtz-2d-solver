@@ -1,11 +1,11 @@
-# `kh2d`: Python-based Kelvin-Helmholtz 2D Instability Solver
+# `kh2d`: Python-based incompressible Kelvin-Helmholtz 2D Instability Solver
 
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-brightgreen.svg)](http://www.wtfpl.net/about/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Numba](https://img.shields.io/badge/accelerated-numba-orange.svg)](https://numba.pydata.org/)
 
-A high-performance solver for 2D Kelvin-Helmholtz instability using finite difference methods with Numba acceleration.
+A high-performance solver for 2D Kelvin-Helmholtz instability for incompressible flows using finite difference methods with Numba acceleration.
 
 ## Features
 
