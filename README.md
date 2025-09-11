@@ -189,11 +189,11 @@ Follow semantic versioning (MAJOR.MINOR.PATCH):
 ## Authors
 
 - Sandy H. S. Herho (sandy.herho@email.ucr.edu)
+- Nurjanna J. Trilaksono
 - Faiz R. Fajary
+- Gandhi Napitupulu
 - Iwan P. Anwar
 - Faruq Khadami
-- Gandhi Napitupulu
-- Nurjanna J. Trilaksono
 
 ## License
 
@@ -210,7 +210,7 @@ If you use this software in your research, please cite:
   author = {Herho, Sandy H. S. and Trilaksono, Nurjanna J. and Fajary, 
   	   Faiz R. and Napitupulu, Gandhi and Anwar, Iwan P. and Khadami, Faruq},
   year = {2025},
-  version = {0.1.2},
+  version = {0.1.4},
   url = {https://github.com/sandyherho/kelvin-helmholtz-2d-solver}
 }
 ```
