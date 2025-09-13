@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kh2d-solver"
-version = "0.1.4"
+version = "0.1.5"
 description = "A high-performance solver for 2D Kelvin-Helmholtz instability with Numba acceleration"
 authors = [
     "Sandy H. S. Herho <sandy.herho@email.ucr.edu>",
@@ -8,7 +8,8 @@ authors = [
     "Faiz R. Fajary <faizrohman@itb.ac.id>",
     "Gandhi Napitupulu <gandhinapitupulu88@gmail.com>",
     "Iwan P. Anwar <iwanpanwar@itb.ac.id>",
-    "Faruq Khadami <fkhadami@itb.ac.id>"
+    "Faruq Khadami <fkhadami@itb.ac.id>",
+    "Dasapta E. Irawan <dasaptaerwin@itb.ac.id>"
 ]
 license = "WTFPL"
 readme = "README.md"

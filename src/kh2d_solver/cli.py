@@ -21,7 +21,7 @@ def print_header():
     """Print professional header with credits."""
     print("\n" + "="*70)
     print(" "*15 + "KELVIN-HELMHOLTZ 2D INSTABILITY SOLVER")
-    print(" "*25 + "Version 0.1.4")
+    print(" "*25 + "Version 0.1.5")
     print("="*70)
     print("\nAuthors:")
     print("  • Sandy H. S. Herho (sandy.herho@email.ucr.edu)")
@@ -30,6 +30,7 @@ def print_header():
     print("  • Gandhi Napitupulu")
     print("  • Iwan P. Anwar")
     print("  • Faruq Khadami")
+    print("  • Dasapta E. Irawan")
     print("\nLicense: WTFPL - Do What The F*** You Want To Public License")
     print("Repository: https://github.com/sandyherho/kelvin-helmholtz-2d-solver")
     print("="*70 + "\n")

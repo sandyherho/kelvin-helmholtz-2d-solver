@@ -194,6 +194,7 @@ Follow semantic versioning (MAJOR.MINOR.PATCH):
 - Gandhi Napitupulu
 - Iwan P. Anwar
 - Faruq Khadami
+- Dasapta E. Irawan
 
 ## License
 
@@ -208,9 +209,9 @@ If you use this software in your research, please cite:
 @software{kh2d_solver_2025,
   title = {{K}elvin-{H}elmholtz {2D} {I}nstability {S}olver},
   author = {Herho, Sandy H. S. and Trilaksono, Nurjanna J. and Fajary, 
-  	   Faiz R. and Napitupulu, Gandhi and Anwar, Iwan P. and Khadami, Faruq},
+  	   Faiz R. and Napitupulu, Gandhi and Anwar, Iwan P. and Khadami, Faruq and Irawan, Dasapta E.},
   year = {2025},
-  version = {0.1.4},
+  version = {0.1.5},
   url = {https://github.com/sandyherho/kelvin-helmholtz-2d-solver}
 }
 ```

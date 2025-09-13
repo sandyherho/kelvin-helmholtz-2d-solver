@@ -43,8 +43,8 @@ class DataHandler:
             
             nc.description = "2D Kelvin-Helmholtz Instability Simulation"
             nc.created = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            nc.software = "kh2d_solver v0.1.4"
-            nc.authors = "Sandy H. S. Herho, Nurjanna J. Trilaksono, Faiz R. Fajary, Gandhi Napitupulu, Iwan P. Anwar, Faruq Khadami"
+            nc.software = "kh2d_solver v0.1.5"
+            nc.authors = "Sandy H. S. Herho, Nurjanna J. Trilaksono, Faiz R. Fajary, Gandhi Napitupulu, Iwan P. Anwar, Faruq Khadami, Dasapta E. Irawan"
             nc.license = "WTFPL"
             
             if 'scenario_name' in metadata:
